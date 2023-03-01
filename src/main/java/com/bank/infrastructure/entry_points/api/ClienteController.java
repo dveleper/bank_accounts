@@ -39,11 +39,8 @@ public class ClienteController {
 
     @DeleteMapping(value = "/delete/{identificacion}")
     public ResponseEntity delete (@PathVariable String identificacion) {
-        if(clienteUseCase.eliminar(identificacion)) {
-            return new ResponseEntity<>(String.format("Cliente %s deleted.", identificacion), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        clienteUseCase.eliminar(identificacion);
+        return new ResponseEntity<>(String.format("Cliente %s deleted.", identificacion), HttpStatus.OK);
     }
 
     @PutMapping("/update/{identificacion}")
