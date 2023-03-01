@@ -2,6 +2,7 @@ package com.bank.infrastructure.entry_points.api;
 
 import com.bank.domain.model.Cuenta;
 import com.bank.domain.usecase.CuentaUseCase;
+import jakarta.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class CuentaController {
     private CuentaUseCase cuentaUseCase;
 
     @PostMapping("/save")
-    public ResponseEntity<Cuenta> save(@RequestBody Cuenta cuenta) {
+    public ResponseEntity<Cuenta> save(@Valid @RequestBody Cuenta cuenta) {
         LOGGER.debug(String.format("creando cuenta %s", cuenta.getTipoCuenta()));
         return new ResponseEntity<>(cuentaUseCase.crear(cuenta), HttpStatus.CREATED);
     }
@@ -49,7 +50,7 @@ public class CuentaController {
     }
 
     @PutMapping("/update/{identificacion}")
-    public ResponseEntity<Cuenta> update (@RequestBody Cuenta cuenta) {
+    public ResponseEntity<Cuenta> update (@Valid @RequestBody Cuenta cuenta) {
         return new ResponseEntity<>(cuentaUseCase.editar(cuenta), HttpStatus.OK);
     }
 }

@@ -25,7 +25,7 @@ public class MovimientoUseCaseImpl implements MovimientoUseCase {
     @Transactional
     public Movimiento crear(Movimiento movimiento) {
         movimiento.setFecha(new Date());
-        Cuenta cuenta = cuentaUseCase.listarPorNumeroCuenta(movimiento.getCuenta().getNumero());
+        Cuenta cuenta = cuentaUseCase.listarPorNumeroCuenta(movimiento.getCuenta());
         afectarSaldo(movimiento, cuenta);
         return movimientoRepository.crear(movimiento);
     }
@@ -40,7 +40,7 @@ public class MovimientoUseCaseImpl implements MovimientoUseCase {
         }
         cuentaUseCase.actualizarSaldo(cuenta.getNumero(), nuevoSaldo);
         cuenta.setSaldo(nuevoSaldo);
-        movimiento.setCuenta(cuenta);
+        movimiento.setCuenta(cuenta.getNumero());
     }
 
     @Override

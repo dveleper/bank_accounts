@@ -2,6 +2,7 @@ package com.bank.infrastructure.entry_points.api;
 
 import com.bank.domain.model.Movimiento;
 import com.bank.domain.usecase.MovimientoUseCase;
+import jakarta.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class MovimientoController {
     private MovimientoUseCase movimientoUseCase;
 
     @PostMapping("/save")
-    public ResponseEntity<Movimiento> save(@RequestBody Movimiento movimiento) {
+    public ResponseEntity<Movimiento> save(@Valid @RequestBody Movimiento movimiento) {
         LOGGER.debug(String.format("creando transaccion %s", movimiento.getTipoMovimiento()));
         return new ResponseEntity<>(movimientoUseCase.crear(movimiento), HttpStatus.CREATED);
     }

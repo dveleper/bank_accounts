@@ -3,6 +3,7 @@ package com.bank.infrastructure.entry_points.api;
 
 import com.bank.domain.model.Cliente;
 import com.bank.domain.usecase.ClienteUseCase;
+import jakarta.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ClienteController {
     private ClienteUseCase clienteUseCase;
 
     @PostMapping("/save")
-    public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> save(@Valid @RequestBody Cliente cliente) {
         LOGGER.debug(String.format("Creando cliente con data %s", cliente), null);
         return new ResponseEntity<>(clienteUseCase.crear(cliente), HttpStatus.CREATED);
     }
