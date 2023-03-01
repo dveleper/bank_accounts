@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mysql_db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: bank_accounts
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: sa
+      MYSQL_ROOT_PASSWORD: root

@@ -3,17 +3,19 @@ package com.bank.domain.usecase.impl;
 import com.bank.domain.model.Cliente;
 import com.bank.domain.model.repository.ClienteRepository;
 import com.bank.domain.usecase.ClienteUseCase;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class ClienteUseCaseImpl implements ClienteUseCase {
 
     private final ClienteRepository clienteRepository;
+
+    public ClienteUseCaseImpl(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     @Override
     @Transactional

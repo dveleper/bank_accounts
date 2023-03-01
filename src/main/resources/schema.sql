@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS account_manager;
-USE account_manager;
+CREATE DATABASE  IF NOT EXISTS bank_accounts;
+USE bank_accounts;
 
 DROP TABLE IF EXISTS movimiento;
 DROP TABLE IF EXISTS cuenta;
