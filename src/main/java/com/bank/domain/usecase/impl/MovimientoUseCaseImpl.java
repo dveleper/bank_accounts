@@ -5,7 +5,7 @@ import com.bank.domain.model.Movimiento;
 import com.bank.domain.model.repository.MovimientoRepository;
 import com.bank.domain.usecase.CuentaUseCase;
 import com.bank.domain.usecase.MovimientoUseCase;
-import com.bank.exception.BankAccountException;
+import com.bank.exception.BankAccountMovimientosException;
 import com.bank.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,6 @@ public class MovimientoUseCaseImpl implements MovimientoUseCase {
     private final MovimientoRepository movimientoRepository;
     private final CuentaUseCase cuentaUseCase;
 
-
     @Override
     @Transactional
     public Movimiento crear(Movimiento movimiento) {
@@ -31,21 +30,18 @@ public class MovimientoUseCaseImpl implements MovimientoUseCase {
         return movimientoRepository.crear(movimiento);
     }
 
-
     private void afectarSaldo(Movimiento movimiento, Cuenta cuenta) {
         movimiento.setSaldo(cuenta.getSaldo());
         BigInteger nuevoSaldo;
         switch (movimiento.getTipoMovimiento()) {
             case Utils.DEBITO -> nuevoSaldo = cuentaUseCase.realizarDebito(cuenta.getSaldo(), movimiento.getValor());
             case Utils.CREDITO -> nuevoSaldo = cuentaUseCase.realizarCredito(cuenta.getSaldo(), movimiento.getValor());
-            default -> throw new BankAccountException(String.format("tipo de movimiento: %s no disponible", movimiento.getTipoMovimiento()));
+            default -> throw new BankAccountMovimientosException(String.format("tipo de movimiento: %s no disponible", movimiento.getTipoMovimiento()));
         }
-        cuentaUseCase.actualizarSaldo(movimiento.getCuenta().getNumero(), nuevoSaldo);
+        cuentaUseCase.actualizarSaldo(cuenta.getNumero(), nuevoSaldo);
         cuenta.setSaldo(nuevoSaldo);
         movimiento.setCuenta(cuenta);
     }
-
-
 
     @Override
     @Transactional(readOnly = true)
@@ -59,7 +55,6 @@ public class MovimientoUseCaseImpl implements MovimientoUseCase {
         return movimientoRepository.listarPorId(idMovimiento);
     }
 
-
     @Override
     @Transactional
     public boolean eliminar(Integer idMovimiento) {
@@ -69,6 +64,7 @@ public class MovimientoUseCaseImpl implements MovimientoUseCase {
     @Override
     @Transactional(readOnly = true)
     public List<Movimiento> listarPorCuenta(String cuenta) {
-        return movimientoRepository.consultaPoCuenta(cuenta);
+        cuentaUseCase.listarPorNumeroCuenta(cuenta);
+        return movimientoRepository.consultaPorCuenta(cuenta);
     }
 }
