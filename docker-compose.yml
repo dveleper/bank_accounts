@@ -10,3 +10,13 @@ services:
       MYSQL_USER: sa
       MYSQL_PASSWORD: sa
       MYSQL_ROOT_PASSWORD: root
+
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/bank_accounts?allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
+    depends_on:
+      - mysql_db
